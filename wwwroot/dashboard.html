@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel - TechPaper</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css?v=6" />
+  </head>
+
+  <body class="dashboard-page">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-badge">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+
+        <div class="sidebar-brand-text">
+          <h2>TechPaper</h2>
+          <span>Sistema de Gestão</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a href="dashboard.html" class="active"
+            ><i class="fa-solid fa-chart-line"></i> Visão Geral</a
+          >
+        </li>
+        <li>
+          <a href="produtos.html"><i class="fa-solid fa-tags"></i> Produtos</a>
+        </li>
+        <li>
+          <a href="fornecedores.html"
+            ><i class="fa-solid fa-truck-field"></i> Fornecedores</a
+          >
+        </li>
+        <li>
+          <a href="estoque.html"
+            ><i class="fa-solid fa-boxes-stacked"></i> Estoque</a
+          >
+        </li>
+        <li>
+          <a href="movimentacao.html"
+            ><i class="fa-solid fa-right-left"></i> Movimentação</a
+          >
+        </li>
+        <li>
+          <a href="relatorios.html"
+            ><i class="fa-solid fa-file-invoice-dollar"></i> Relatórios</a
+          >
+        </li>
+        <li>
+          <a href="usuarios.html"
+            ><i class="fa-solid fa-users-gear"></i> Usuários</a
+          >
+        </li>
+        <li>
+          <a href="suporte.html"><i class="fa-solid fa-headset"></i> Suporte</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h1>Visão Geral do Sistema</h1>
+
+        <div class="user-menu-container">
+          <div class="user-trigger" onclick="toggleUserMenu()">
+            <span>Olá, Supervisor</span>
+            <i class="fa-solid fa-circle-user user-icon"></i>
+            <i class="fa-solid fa-chevron-down icon-chevron"></i>
+          </div>
+
+          <div class="user-dropdown" id="userDropdown">
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalMeusDados');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-address-card"></i> Meus Dados
+            </a>
+
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalConfig');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-gear"></i> Configurações
+            </a>
+
+            <a href="login.html" class="logout">
+              <i class="fa-solid fa-power-off"></i> Encerrar Sessão
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="content-area">
+        <div class="dashboard-grid">
+          <div class="card card-info">
+            <i class="fa-solid fa-box dash-icon-blue"></i>
+            <h3 class="dash-card-title">Total de Produtos</h3>
+            <p id="cardTotalProdutos" class="dash-value-blue">0</p>
+          </div>
+
+          <div class="card card-info">
+            <i class="fa-solid fa-triangle-exclamation dash-icon-danger"></i>
+            <h3 class="dash-card-title">Estoque Baixo</h3>
+            <p id="cardEstoqueBaixo" class="dash-value-danger">0</p>
+          </div>
+
+          <div class="card card-info">
+            <i class="fa-solid fa-truck dash-icon-blue"></i>
+            <h3 class="dash-card-title">Fornecedores</h3>
+            <p id="cardFornecedores" class="dash-value-blue">0</p>
+          </div>
+
+          <div class="card card-movimento">
+            <i class="fa-solid fa-arrow-right-to-bracket dash-icon-success"></i>
+            <h3 class="dash-card-title">Entradas Hoje</h3>
+            <p id="cardEntradasHoje" class="dash-value-success">0</p>
+          </div>
+
+          <div class="card card-movimento">
+            <i
+              class="fa-solid fa-arrow-right-from-bracket dash-icon-danger"
+            ></i>
+            <h3 class="dash-card-title">Saídas Hoje</h3>
+            <p id="cardSaidasHoje" class="dash-value-danger">0</p>
+          </div>
+
+          <div class="card card-grafico">
+            <h3 class="chart-title">
+              <i class="fa-solid fa-chart-pie chart-icon-blue"></i>
+              Estoque por Categoria
+            </h3>
+
+            <div class="chart-canvas-box">
+              <canvas id="graficoCategoria"></canvas>
+            </div>
+          </div>
+
+          <div class="card card-grafico">
+            <h3 class="chart-title">
+              <i class="fa-solid fa-chart-column chart-icon-success"></i>
+              Volume de Movimentações
+            </h3>
+
+            <div class="chart-canvas-box">
+              <canvas id="graficoMovimentacao"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <div>
+          &copy; 2026 <b>TechPaper Sistema de Gestão</b>. Todos os direitos
+          reservados.
+        </div>
+
+        <div class="footer-info">
+          <span><i class="fa-solid fa-code"></i> Versão 1.0.0</span>
+        </div>
+      </footer>
+    </main>
+
+    <div class="modal-overlay" id="modalMeusDados">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModal('modalMeusDados')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2 class="modal-title">
+          <i class="fa-solid fa-address-card"></i> Meu Perfil
+        </h2>
+
+        <div class="input-group">
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            class="form-input input-readonly"
+            value="Administrador Sistema"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>E-mail Corporativo</label>
+          <input
+            type="email"
+            class="form-input input-readonly"
+            value="admin@techpaper.com"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Nível de Acesso</label>
+          <input
+            type="text"
+            class="form-input input-readonly input-emphasis"
+            value="Supervisor Total"
+            readonly
+          />
+        </div>
+
+        <button
+          class="btn-submit btn-full mt-10"
+          onclick="fecharModal('modalMeusDados')"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalConfig">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModal('modalConfig')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2 class="modal-title">
+          <i class="fa-solid fa-gear"></i> Configurações
+        </h2>
+
+        <div class="settings-options">
+          <label class="settings-option">
+            <input type="checkbox" checked class="settings-color" />
+            Receber alertas de estoque baixo por e-mail
+          </label>
+        </div>
+
+        <button
+          class="btn-submit btn-full btn-success mt-20"
+          onclick="fecharModal('modalConfig')"
+        >
+          Salvar Preferências
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function toggleUserMenu() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.classList.toggle("active");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.closest(".user-menu-container")) {
+          const dropdown = document.getElementById("userDropdown");
+
+          if (dropdown && dropdown.classList.contains("active")) {
+            dropdown.classList.remove("active");
+          }
+        }
+      };
+
+      function abrirModal(idModal) {
+        document.getElementById(idModal).classList.add("active");
+
+        const dropdown = document.getElementById("userDropdown");
+
+        if (dropdown) {
+          dropdown.classList.remove("active");
+        }
+      }
+
+      function fecharModal(idModal) {
+        document.getElementById(idModal).classList.remove("active");
+      }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script src="js/menu-mobile.js"></script>
+    <script src="js/configuracoes.js"></script>
+  </body>
+</html>

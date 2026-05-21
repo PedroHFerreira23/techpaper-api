@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Relatórios - TechPaper</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css?v=14" />
+  </head>
+
+  <body class="dashboard-page">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-badge">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+
+        <div class="sidebar-brand-text">
+          <h2>TechPaper</h2>
+          <span>Sistema de Gestão</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a href="dashboard.html"
+            ><i class="fa-solid fa-chart-line"></i> Visão Geral</a
+          >
+        </li>
+        <li>
+          <a href="produtos.html"><i class="fa-solid fa-tags"></i> Produtos</a>
+        </li>
+        <li>
+          <a href="fornecedores.html"
+            ><i class="fa-solid fa-truck-field"></i> Fornecedores</a
+          >
+        </li>
+        <li>
+          <a href="estoque.html"
+            ><i class="fa-solid fa-boxes-stacked"></i> Estoque</a
+          >
+        </li>
+        <li>
+          <a href="movimentacao.html"
+            ><i class="fa-solid fa-right-left"></i> Movimentação</a
+          >
+        </li>
+        <li>
+          <a href="relatorios.html" class="active"
+            ><i class="fa-solid fa-file-invoice-dollar"></i> Relatórios</a
+          >
+        </li>
+        <li>
+          <a href="usuarios.html"
+            ><i class="fa-solid fa-users-gear"></i> Usuários</a
+          >
+        </li>
+        <li>
+          <a href="suporte.html"><i class="fa-solid fa-headset"></i> Suporte</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h1>Relatórios Gerenciais</h1>
+
+        <div class="user-menu-container">
+          <div class="user-trigger" onclick="toggleUserMenu()">
+            <span>Olá, Supervisor</span>
+            <i class="fa-solid fa-circle-user user-icon"></i>
+            <i class="fa-solid fa-chevron-down icon-chevron"></i>
+          </div>
+
+          <div class="user-dropdown" id="userDropdown">
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalMeusDados');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-address-card"></i> Meus Dados
+            </a>
+
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalConfig');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-gear"></i> Configurações
+            </a>
+
+            <a href="login.html" class="logout">
+              <i class="fa-solid fa-power-off"></i> Encerrar Sessão
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="content-area">
+        <div class="page-body">
+          <div class="form-container mt-20">
+            <div class="filtros-container mb-30">
+              <h2 class="filter-title">
+                <i class="fa-solid fa-filter"></i>
+                Filtros do Relatório
+              </h2>
+
+              <div class="form-grid">
+                <div class="input-group">
+                  <label for="tipoRelatorio">Tipo de Relatório</label>
+
+                  <select id="tipoRelatorio" class="form-input">
+                    <option value="estoque_atual">
+                      Posição Atual de Estoque
+                    </option>
+                    <option value="entradas">
+                      Histórico de Entradas (Compras)
+                    </option>
+                    <option value="saidas">Histórico de Saídas (Vendas)</option>
+                    <option value="estoque_critico">
+                      Produtos com Estoque Crítico
+                    </option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="categoriaFiltro">Filtrar por Categoria</label>
+
+                  <select id="categoriaFiltro" class="form-input">
+                    <option value="Todas">Todas as Categorias</option>
+                    <option value="cadernos">Cadernos e Agendas</option>
+                    <option value="escrita">Canetas e Lápis</option>
+                    <option value="papel">Papéis (A4, Sulfite)</option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="dataInicio">Data Inicial</label>
+                  <input type="date" id="dataInicio" class="form-input" />
+                </div>
+
+                <div class="input-group">
+                  <label for="dataFim">Data Final</label>
+                  <input type="date" id="dataFim" class="form-input" />
+                </div>
+              </div>
+
+              <div class="form-actions mt-15">
+                <button class="btn-submit" onclick="gerarRelatorio()">
+                  <i class="fa-solid fa-filter"></i>
+                  Aplicar Filtros
+                </button>
+              </div>
+            </div>
+
+            <div id="areaResultados">
+              <div class="result-header">
+                <h3 class="result-title" id="tituloResultado">
+                  <i class="fa-solid fa-list-check"></i>
+                  Resultados
+                </h3>
+
+                <div class="export-actions">
+                  <button
+                    class="btn-export btn-excel"
+                    onclick="exportarExcel()"
+                  >
+                    <i class="fa-solid fa-file-excel"></i>
+                    Excel
+                  </button>
+
+                  <button class="btn-export btn-pdf" onclick="exportarPDF()">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    PDF
+                  </button>
+                </div>
+              </div>
+
+              <div class="cabecalho-impressao print-header">
+                <h2>TechPaper - Sistema de Gestão</h2>
+                <h3 id="tituloImpressao">Relatório Gerencial</h3>
+                <hr />
+              </div>
+
+              <div class="table-scroll">
+                <table id="tabelaRelatorio" class="table-clean">
+                  <thead
+                    id="cabecalhoTabela"
+                    class="table-head-muted table-head-bg"
+                  ></thead>
+
+                  <tbody id="corpoTabelaRelatorio">
+                    <tr>
+                      <td class="empty-state-cell">
+                        Selecione os filtros e clique em "Aplicar Filtros".
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <div>
+          &copy; 2026 <b>TechPaper Sistema de Gestão</b>. Todos os direitos
+          reservados.
+        </div>
+
+        <div class="footer-info">
+          <span><i class="fa-solid fa-code"></i> Versão 1.0.0</span>
+        </div>
+      </footer>
+    </main>
+
+    <div class="modal-overlay" id="modalMeusDados">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModal('modalMeusDados')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2 class="modal-title">
+          <i class="fa-solid fa-address-card"></i> Meu Perfil
+        </h2>
+
+        <div class="input-group">
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            class="form-input input-readonly"
+            value="Administrador Sistema"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>E-mail Corporativo</label>
+          <input
+            type="email"
+            class="form-input input-readonly"
+            value="admin@techpaper.com"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Nível de Acesso</label>
+          <input
+            type="text"
+            class="form-input input-readonly input-emphasis"
+            value="Supervisor Total"
+            readonly
+          />
+        </div>
+
+        <button
+          class="btn-submit btn-full mt-10"
+          onclick="fecharModal('modalMeusDados')"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalConfig">
+      <div class="modal-content"></div>
+    </div>
+
+    <script>
+      function toggleUserMenu() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.classList.toggle("active");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.closest(".user-menu-container")) {
+          const dropdown = document.getElementById("userDropdown");
+
+          if (dropdown && dropdown.classList.contains("active")) {
+            dropdown.classList.remove("active");
+          }
+        }
+      };
+
+      function abrirModal(idModal) {
+        document.getElementById(idModal).classList.add("active");
+
+        const dropdown = document.getElementById("userDropdown");
+
+        if (dropdown) {
+          dropdown.classList.remove("active");
+        }
+      }
+
+      function fecharModal(idModal) {
+        document.getElementById(idModal).classList.remove("active");
+      }
+    </script>
+
+    <script src="js/relatorios.js"></script>
+    <script src="js/relatorios-ajustes.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-mobile.js"></script>
+    <script src="js/configuracoes.js"></script>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+@TechPaperAPI_HostAddress = http://localhost:5108
+
+GET {{TechPaperAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

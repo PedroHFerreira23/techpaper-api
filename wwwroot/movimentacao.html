@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Movimentação - TechPaper</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css?v=14" />
+  </head>
+
+  <body class="dashboard-page">
+    <div id="toastContainer" class="toast-container"></div>
+
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-badge">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+
+        <div class="sidebar-brand-text">
+          <h2>TechPaper</h2>
+          <span>Sistema de Gestão</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li>
+          <a href="dashboard.html"
+            ><i class="fa-solid fa-chart-line"></i> Visão Geral</a
+          >
+        </li>
+        <li>
+          <a href="produtos.html"><i class="fa-solid fa-tags"></i> Produtos</a>
+        </li>
+        <li>
+          <a href="fornecedores.html"
+            ><i class="fa-solid fa-truck-field"></i> Fornecedores</a
+          >
+        </li>
+        <li>
+          <a href="estoque.html"
+            ><i class="fa-solid fa-boxes-stacked"></i> Estoque</a
+          >
+        </li>
+        <li>
+          <a href="movimentacao.html" class="active"
+            ><i class="fa-solid fa-right-left"></i> Movimentação</a
+          >
+        </li>
+        <li>
+          <a href="relatorios.html"
+            ><i class="fa-solid fa-file-invoice-dollar"></i> Relatórios</a
+          >
+        </li>
+        <li>
+          <a href="usuarios.html"
+            ><i class="fa-solid fa-users-gear"></i> Usuários</a
+          >
+        </li>
+        <li>
+          <a href="suporte.html"><i class="fa-solid fa-headset"></i> Suporte</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <h1>Movimentação de Estoque</h1>
+
+        <div class="user-menu-container">
+          <div class="user-trigger" onclick="toggleUserMenu()">
+            <span>Olá, Supervisor</span>
+            <i class="fa-solid fa-circle-user user-icon"></i>
+            <i class="fa-solid fa-chevron-down icon-chevron"></i>
+          </div>
+
+          <div class="user-dropdown" id="userDropdown">
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalMeusDados');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-address-card"></i> Meus Dados
+            </a>
+
+            <a
+              href="#"
+              onclick="
+                abrirModal('modalConfig');
+                return false;
+              "
+            >
+              <i class="fa-solid fa-gear"></i> Configurações
+            </a>
+
+            <a href="login.html" class="logout">
+              <i class="fa-solid fa-power-off"></i> Encerrar Sessão
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="content-area">
+        <div class="page-body">
+          <div class="form-container mb-30">
+            <div class="form-header">
+              <h2>
+                <i class="fa-solid fa-arrow-right-arrow-left icon-section"></i>
+                Registrar Nova Movimentação
+              </h2>
+            </div>
+
+            <form id="formMovimentacao">
+              <div class="form-grid">
+                <div class="input-group">
+                  <label for="tipoMovimentacao">Tipo</label>
+
+                  <select id="tipoMovimentacao" class="form-input" required>
+                    <option value="" disabled selected>Selecione...</option>
+                    <option value="Entrada">Entrada (Compra/Devolução)</option>
+                    <option value="Saida">Saída (Venda/Perda)</option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="produtoSelect">Produto (SKU - Nome)</label>
+
+                  <select id="produtoSelect" class="form-input" required>
+                    <option value="" disabled selected>
+                      Selecione o produto...
+                    </option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label for="quantidadeMovimentacao">Quantidade</label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <input
+                      type="number"
+                      id="quantidadeMovimentacao"
+                      placeholder="Ex: 50"
+                      min="1"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <label for="motivoMovimentacao">Motivo / Observação</label>
+
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <input
+                      type="text"
+                      id="motivoMovimentacao"
+                      placeholder="Ex: Nota Fiscal nº 12345"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                  <i class="fa-solid fa-check"></i>
+                  Confirmar Registro
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <h2>
+                <i class="fa-solid fa-clock-rotate-left icon-section"></i>
+                Últimas Movimentações Hoje
+              </h2>
+            </div>
+
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Data/Hora</th>
+                    <th>Produto</th>
+                    <th>Tipo</th>
+                    <th>Qtd.</th>
+                    <th>Motivo</th>
+                    <th>Responsável</th>
+                  </tr>
+                </thead>
+
+                <tbody id="corpoTabelaMovimentacao"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <div>
+          &copy; 2026 <b>TechPaper Sistema de Gestão</b>. Todos os direitos
+          reservados.
+        </div>
+
+        <div class="footer-info">
+          <span><i class="fa-solid fa-code"></i> Versão 1.0.0</span>
+        </div>
+      </footer>
+    </main>
+
+    <div class="modal-overlay" id="modalMeusDados">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModal('modalMeusDados')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <h2 class="modal-title">
+          <i class="fa-solid fa-address-card"></i> Meu Perfil
+        </h2>
+
+        <div class="input-group">
+          <label>Nome Completo</label>
+          <input
+            type="text"
+            class="form-input input-readonly"
+            value="Administrador Sistema"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>E-mail Corporativo</label>
+          <input
+            type="email"
+            class="form-input input-readonly"
+            value="admin@techpaper.com"
+            readonly
+          />
+        </div>
+
+        <div class="input-group">
+          <label>Nível de Acesso</label>
+          <input
+            type="text"
+            class="form-input input-readonly input-emphasis"
+            value="Supervisor Total"
+            readonly
+          />
+        </div>
+
+        <button
+          class="btn-submit btn-full mt-10"
+          onclick="fecharModal('modalMeusDados')"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalConfig">
+      <div class="modal-content"></div>
+    </div>
+
+    <script>
+      function toggleUserMenu() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.classList.toggle("active");
+      }
+
+      window.onclick = function (event) {
+        if (!event.target.closest(".user-menu-container")) {
+          const dropdown = document.getElementById("userDropdown");
+
+          if (dropdown && dropdown.classList.contains("active")) {
+            dropdown.classList.remove("active");
+          }
+        }
+      };
+
+      function abrirModal(idModal) {
+        document.getElementById(idModal).classList.add("active");
+
+        const dropdown = document.getElementById("userDropdown");
+
+        if (dropdown) {
+          dropdown.classList.remove("active");
+        }
+      }
+
+      function fecharModal(idModal) {
+        document.getElementById(idModal).classList.remove("active");
+      }
+    </script>
+
+    <script src="js/movimentacao.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-mobile.js"></script>
+    <script src="js/configuracoes.js"></script>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+    <script>
+      new window.VLibras.Widget("https://vlibras.gov.br/app");
+    </script>
+    <script src="js/validacoes.js"></script>
+  </body>
+</html>
