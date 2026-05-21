@@ -1741,3 +1741,30 @@ body.login-page .toast-container {
     max-width: 100% !important;
   }
 }
+
+/* ==========================================================================
+   ESCONDER CABEÇALHO DE IMPRESSÃO NA TELA NORMAL
+   ========================================================================== */
+
+.cabecalho-impressao,
+.print-header {
+  display: none !important;
+}
+
+/* Só aparece quando for imprimir */
+@media print {
+  .cabecalho-impressao,
+  .print-header {
+    display: block !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+  }
+
+  .cabecalho-impressao h2,
+  .cabecalho-impressao h3,
+  .print-header h2,
+  .print-header h3 {
+    color: #1565c0 !important;
+    background: transparent !important;
+  }
+}
